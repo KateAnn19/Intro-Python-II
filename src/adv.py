@@ -1,5 +1,7 @@
 from room import Room
 from player import Player
+import random 
+import sys
 # Declare all the rooms
 
 room = {
@@ -21,8 +23,11 @@ chamber! Sadly, it has already been completely emptied by
 earlier adventurers. The only exit is to the south."""),
 }
 
+quotes= ["money is the worst discovery of human life. But it is the most trusted material to test human nature.", "There is no fear for one whose mind is not filled with desires. Buddha", "Money is the root of all evil", "It is better to say goodbye", "so long"]
+
 
 # Link rooms together
+# Map
 
 room['outside'].n_to = room['foyer']
 room['foyer'].s_to = room['outside']
@@ -39,13 +44,47 @@ room['treasure'].s_to = room['narrow']
 
 # Make a new player object that is currently in the 'outside' room.
 
-player = Player(room['outside'])
+player1 = Player(room['outside'])  
 
-while True:
-    print(player.location)
+while True:   
+    print("*************************FORTUNE'S QUEST******************************************************************************************************************************************\nWelcome to a very simple game with very simple rules:\n 1) You can go 4 directions, n - s - e - w . Your mission is to reach the treasure. If you go a wrong direction more than 2 times you will fall into a pit of lava 🔥 and must start over. You win the game when you find the treasure. Along the way you will meet lots of friendly and not so friendly creatures. Some will help you and and some will try to steer you away from the treasure. You can also collect items as you go to feed the bad creatures and make them fall into the pit. Good luck. May Fortune \💰 be with you.")
+    print(player1.location)
+    # print(sys.argv)
     command = input("> (q to quit)").split(',')
     if (command[0] == 'q'):
+        print(random.choice(quotes))
         break
+    elif(command[0] == 'n'):
+        if(player1.location == room['outside']):
+            player1.updatelocation(room['outside'].n_to)
+        elif(player1.location == room['foyer']):
+            player1.updatelocation(room['foyer'].n_to)
+        elif(player1.location == room['narrow']):
+            player1.updatelocation(room['narrow'].n_to)
+               
+        #if player hits any other key besides n then return 'not the right direction. try again' (add feature that if direction is wrong 2 times you die)
+    elif(command[0] == 's'):
+        if(player1.location == room['foyer']):
+            player1.updatelocation(room['foyer'].s_to)
+        elif(player1.location == room['overlook']):
+            player1.updatelocation(room['overlook'].s_to)
+        elif(player1.location == room['treasure']):
+            player1.updatelocation(room['treasure'].s_to)
+    elif(command[0] == 'e'):
+        if(player1.location == room['foyer']):
+            player1.updatelocation(room['foyer'].e_to)
+    elif(command[0] == 'w'):
+        if(player1.location == room['narrow']):
+            player1.updatelocation(room['narrow'].w_to)
+    else:
+        player1.decreaselives()
+        if(player1.lives == 0):
+            print("WWWWWWWMMMMMMMMMMMWWWWWWMMMMMWWWWVVVVVVVNNNN\nFire Fire Fire AWWWWWWW\nGame Over")
+            sys.exit(1)
+        print("You have selected a inappropriate key. Even your cat's random keyboard press counts. Careful.") 
+        print(f"Lives remaining {player1.lives}")
+
+
 
 # Write a loop that:
 #
