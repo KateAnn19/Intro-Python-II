@@ -2,6 +2,7 @@ from room import Room
 from player import Player
 import random 
 import sys
+
 # Declare all the rooms
 
 room = {
@@ -43,13 +44,18 @@ room['treasure'].s_to = room['narrow']
 #
 
 # Make a new player object that is currently in the 'outside' room.
-
-player1 = Player(room['outside'])  
-
-while True:   
-    print("*************************FORTUNE'S QUEST******************************************************************************************************************************************\nWelcome to a very simple game with very simple rules:\n 1) You can go 4 directions, n - s - e - w . Your mission is to reach the treasure. If you go a wrong direction more than 2 times you will fall into a pit of lava 🔥 and must start over. You win the game when you find the treasure. Along the way you will meet lots of friendly and not so friendly creatures. Some will help you and and some will try to steer you away from the treasure. You can also collect items as you go to feed the bad creatures and make them fall into the pit. Good luck. May Fortune \💰 be with you.")
+name = input("Enter your name: ").split(',')
+player1 = Player(name[0], room['outside'])  
+beginning = True
+while True:  
+    if(beginning == True):
+        print(f"*************************FORTUNE'S QUEST******************************************************************************************************************************************\nWelcome to a very simple game with very simple rules:\n 1) You can go 4 directions, n - s - e - w . Your mission is to reach the treasure. If you go a wrong direction more than 2 times you will fall into a pit of lava 🔥 and must start over. You win the game when you find the treasure. Along the way you will meet lots of friendly and not so friendly creatures. Some will help you and and some will try to steer you away from the treasure. You can also collect items as you go to feed the bad creatures and make them fall into the pit. Good luck. May Fortune 💰 be with you {player1.name}.")
+    
     print(player1.location)
     # print(sys.argv)
+    print(player1.name)
+    beginning = False 
+    
     command = input("> (q to quit)").split(',')
     if (command[0] == 'q'):
         print(random.choice(quotes))
@@ -61,6 +67,10 @@ while True:
             player1.updatelocation(room['foyer'].n_to)
         elif(player1.location == room['narrow']):
             player1.updatelocation(room['narrow'].n_to)
+        elif(player1.location == room['treasure'] or player1.location == room['overlook']):
+            player1.decreaselives()
+            print(f"Lives remaining {player1.lives}")
+            print(f"Wrong location try again. Remember to look at the hint {player1.name}")
                
         #if player hits any other key besides n then return 'not the right direction. try again' (add feature that if direction is wrong 2 times you die)
     elif(command[0] == 's'):
@@ -70,12 +80,26 @@ while True:
             player1.updatelocation(room['overlook'].s_to)
         elif(player1.location == room['treasure']):
             player1.updatelocation(room['treasure'].s_to)
+        elif(player1.location == room['narrow'] or player1.location == room['treasure']):
+            player1.decreaselives()
+            print(f"Lives remaining {player1.lives}")
+            print(f"Wrong location try again. Remember to look at the hint {player1.name}")
     elif(command[0] == 'e'):
         if(player1.location == room['foyer']):
             player1.updatelocation(room['foyer'].e_to)
+        elif(player1.location == room['overlook'] or player1.location == room['treasure'] or player1.location == room['narrow'] or player1.location == room['outside']):
+            player1.decreaselives()
+            print(f"Lives remaining {player1.lives}")
+            print(f"Wrong location try again. Remember to look at the hint {player1.name}")
+        
     elif(command[0] == 'w'):
         if(player1.location == room['narrow']):
             player1.updatelocation(room['narrow'].w_to)
+        elif(player1.location == room['overlook'] or player1.location == room['treasure']  or player1.location == room['foyer'] or player1.location == room['outside']):
+            player1.decreaselives()
+            print(f"Lives remaining {player1.lives}")
+            print(f"Wrong location try again. Remember to look at the hint {player1.name}")
+        
     else:
         player1.decreaselives()
         if(player1.lives == 0):
