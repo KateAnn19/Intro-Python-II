@@ -46,21 +46,47 @@ room_dict['treasure'].s_to = room_dict['narrow']
 
 # Make a new player object that is currently in the 'outside' room_dict.
 name = input("Enter your name: ").split(',')
+
 player1 = Player(name[0], room_dict['outside'])  
 
-beginning = True
 
+print(f"*************************FORTUNE'S QUEST******************************************************************************************************************************************\nWelcome to a very simple game with very simple rules:\n 1) You can go 4 directions, n - s - e - w . Your mission is to reach the treasure. If you go a wrong direction more than 2 times you will fall into a pit of lava 🔥 and must start over. You win the game when you find the treasure. Along the way you will meet lots of friendly and not so friendly creatures. Some will help you and and some will try to steer you away from the treasure. You can also collect items as you go to feed the bad creatures and make them fall into the pit. Good luck. May Fortune 💰 be with you {player1.name}.")
+
+print("################################################################################")
+
+
+def chooseitem():
+    print("################################################################################")
+    print(f"You have moved to the Room : {player1.location.name}")
+    print("################################################################################")
+    while True:
+        print("################################################################################")
+        char = input(">(p to exit) Pick something up by selecting a number\n").split(',')
+        print("################################################################################")
+        if(char[0] == 'p' or char[0] == 'q') : 
+            break
+        else:
+            inventory_selection = int(char[0])
+            possible_items = player1.location.items #this is accessing items
+            # index into the current location's list of items using the `inventory_selection`
+            selected_item = possible_items[inventory_selection]
+            player1.add_to_inventory(selected_item)
+            room_dict[player1.location.name].remove_items(selected_item)
+    print("################################################################################")
+    player1.print_inventory()
+    print("################################################################################")
 while True:  
-    if(beginning == True):
-        print(f"*************************FORTUNE'S QUEST******************************************************************************************************************************************\nWelcome to a very simple game with very simple rules:\n 1) You can go 4 directions, n - s - e - w . Your mission is to reach the treasure. If you go a wrong direction more than 2 times you will fall into a pit of lava 🔥 and must start over. You win the game when you find the treasure. Along the way you will meet lots of friendly and not so friendly creatures. Some will help you and and some will try to steer you away from the treasure. You can also collect items as you go to feed the bad creatures and make them fall into the pit. Good luck. May Fortune 💰 be with you {player1.name}.")
-    
-    print(player1.location)
     room_dict[player1.location.name].print_roomitems()
-    # print(sys.argv)
-    print(player1.name)
-    beginning = False 
     
-    command = input("> (q to quit)").split(',')
+    # print(sys.argv)
+    # we want the player to be able to add items to their bag  
+    chooseitem()
+
+    print("################################################################################")
+        
+    command = input("> (q to quit) Now choose a location using n-s-e-w ||=> ").split(',')
+
+    print("################################################################################")
     if (command[0] == 'q'):
         print(random.choice(quotes))
         break
@@ -70,9 +96,7 @@ while True:
             print(f"Lives remaining {player1.lives}")
             print(f"Wrong location try again. Remember to look at the hint {player1.name}")
         else:
-            player1.updatelocation(room_dict[player1.location.name].n_to)
-            room_dict[player1.location.name].print_roomitems()
-               
+            player1.updatelocation(room_dict[player1.location.name].n_to)     
         #if player hits any other key besides n then return 'not the right direction. try again' (add feature that if direction is wrong 2 times you die)
     elif(command[0] == 's'):
         if(player1.location.s_to == 'undefined'):
@@ -81,7 +105,6 @@ while True:
             print(f"Wrong location try again. Remember to look at the hint {player1.name}")
         else:
             player1.updatelocation(room_dict[player1.location.name].s_to)
-            room_dict[player1.location.name].print_roomitems()
     elif(command[0] == 'e'):
         if(player1.location.e_to == 'undefined'):
             player1.decreaselives()
@@ -89,7 +112,6 @@ while True:
             print(f"Wrong location try again. Remember to look at the hint {player1.name}")
         else:
             player1.updatelocation(room_dict[player1.location.name].e_to)
-            room_dict[player1.location.name].print_roomitems()
     elif(command[0] == 'w'):
         if(player1.location.w_to == 'undefined'):
             player1.decreaselives()
@@ -97,7 +119,6 @@ while True:
             print(f"Wrong location try again. Remember to look at the hint {player1.name}")
         else:
             player1.updatelocation(room_dict[player1.location.name].w_to)
-            room_dict[player1.location.name].print_roomitems()
     else:
         player1.decreaselives()
         if(player1.lives == 0):

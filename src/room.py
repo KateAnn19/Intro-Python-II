@@ -12,8 +12,17 @@ class Room:
         self.description = description
         self.items= items
     def __str__(self):
-        return f"\n\nYou are in the {self.name}\n{self.description}".format(self=self)
+        return f"\n\nRoom: {self.name}\n{self.description}".format(self=self)
     def print_roomitems(self):
         for rid, r in enumerate(self.items):
+            print()
             print(f"{rid}: {r}")
         print()
+    def remove_items(self, item):
+        self.items.remove(item)
+        if(len(self.items) == 0):
+            print('ALL GONE, Move on soldier!!!')
+        else:
+            print(f'Got item[{item.name}] to remove in Room:{self.name}. After removal here is whats left in this room')
+            self.print_roomitems();
+        

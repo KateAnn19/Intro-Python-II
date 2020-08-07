@@ -18,36 +18,36 @@ Up to this point, you've gotten your feet wet by working on a bunch of small Pyt
 
 ### Day 1 MVP
 
-* Create the input command parser in `adv.py` which allows the program to receive player input and commands to move to rooms
+* Create the input command parser in `adv.py` which allows the program to receive player input and commands to move to room_dicts
   in the four cardinal directions.
-* Fill out Player and Room classes in `player.py` and `room.py`
+* Fill out Player and Room classes in `player.py` and `room_dict.py`
 
 ### Day 2 MVP
 
-* Make rooms able to hold multiple items
+* Make room_dicts able to hold multiple items
 * Make the player able to carry multiple items
 * Add items to the game that the user can carry around
 * Add `get [ITEM_NAME]` and `drop [ITEM_NAME]` commands to the parser
 
 ## Specification
 
-The `/src` directory contains the files `adv.py`, which is where the main logic for the game should live, `room.py`, which will contain the definition of the Room class, and `player.py`, which will contain the definition of the Player class.
+The `/src` directory contains the files `adv.py`, which is where the main logic for the game should live, `room_dict.py`, which will contain the definition of the Room class, and `player.py`, which will contain the definition of the Player class.
 
 
 * Add a REPL parser to `adv.py` that accepts directional commands to move the player
-  * After each move, the REPL should print the name and description of the player's current room
+  * After each move, the REPL should print the name and description of the player's current room_dict
   * Valid commands are `n`, `s`, `e` and `w` which move the player North, South, East or West
-  * The parser should print an error if the player tries to move where there is no room.
+  * The parser should print an error if the player tries to move where there is no room_dict.
 
-* Put the Room class in `room.py` based on what you see in `adv.py`.
+* Put the Room class in `room_dict.py` based on what you see in `adv.py`.
 
-  * The room should have `name` and `description` attributes.
+  * The room_dict should have `name` and `description` attributes.
 
-  * The room should also have `n_to`, `s_to`, `e_to`, and `w_to` attributes
-    which point to the room in that respective direction.
+  * The room_dict should also have `n_to`, `s_to`, `e_to`, and `w_to` attributes
+    which point to the room_dict in that respective direction.
 
 * Put the Player class in `player.py`.
-  * Players should have a `name` and `current_room` attributes
+  * Players should have a `name` and `current_room_dict` attributes
 
 
 * Create a file called `item.py` and add an `Item` class in there.
@@ -59,13 +59,13 @@ The `/src` directory contains the files `adv.py`, which is where the main logic 
   * This will be the _base class_ for specialized item types to be declared
     later.
 
-* Add the ability to add items to rooms.
+* Add the ability to add items to room_dicts.
 
   * The `Room` class should be extended with a `list` that holds the `Item`s
-    that are currently in that room.
+    that are currently in that room_dict.
 
   * Add functionality to the main loop that prints out all the items that are
-    visible to the player when they are in that room.
+    visible to the player when they are in that room_dict.
 
 * Add capability to add `Item`s to the player's inventory. The inventory can
   also be a `list` of items "in" the player, similar to how `Item`s can be in a
@@ -120,7 +120,7 @@ The `/src` directory contains the files `adv.py`, which is where the main logic 
 
 In arbitrary order:
 
-* Add more rooms
+* Add more room_dicts
 
 * Add scoring
 
@@ -136,13 +136,13 @@ In arbitrary order:
 
   * Add an attribute to `Room` called `is_light` that is `True` if the `Room` is
   naturally illuminated, or `False` if a `LightSource` is required to see what
-  is in the room.
+  is in the room_dict.
 
   * Modify the main loop to test if there is light in the `Room` (i.e. if
     `is_light` is `True` **or** there is a `LightSource` item in the `Room`'s
     contents **or** if there is a `LightSource` item in the `Player`'s contents).
 
-  * If there is light in the room, display name, description, and contents as
+  * If there is light in the room_dict, display name, description, and contents as
     normal.
 
   * If there isn't, print out "It's pitch black!" instead.
@@ -176,7 +176,7 @@ In arbitrary order:
     * Modify the parser to handle commands like "take rusty sword" as well as
       "take sword".
 
-      * If the user is in a room that contains both the rusty sword _and_ silver
+      * If the user is in a room_dict that contains both the rusty sword _and_ silver
         sword, and they type "take sword", the parser should say, "I don't know
         which you mean: rusty sword or silver sword."
 
