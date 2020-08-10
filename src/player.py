@@ -12,6 +12,7 @@ class Player:
     def updatelocation(self, location):
         self.location = location
     def add_to_inventory(self, item):
+        
         self.inventory.append(item)
         self.print_inventory() 
     def decreaselives(self):

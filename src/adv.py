@@ -3,6 +3,7 @@ from player import Player
 import random 
 import sys
 from items import Items
+import re 
 
 # Declare all the room_dicts
 
@@ -62,13 +63,41 @@ def chooseitem():
     while True:
         print("################################################################################")
         char = input(">(p to exit) Pick something up by selecting a number\n").split(',')
+        x = re.findall('[0-9]+', char[0])
         print("################################################################################")
+
+        get = input("> Add item by typing 'get' and name of item").split(' ')
+        print(get[0])
+        drop = input("> Drop item by typing 'drop' and name of item").split(' ')
+        if(get[0] == 'get' and len(get) == 2):
+            #check to see if the item exists in item inventory
+            possible_items = player1.location.items
+            print(possible_items)
+        if(drop[0] == 'drop' and len(drop) == 2):
+            #check to see if the item exists in item inventory
+            possible_items = player1.location.items
+            print(possible_items)
+
+            #check to see if the item is present in the player's list
+            #if true and false then add to player's list
+            #display the player's list with item added
+        else:
+            print("Invalid request")
+             
         if(char[0] == 'p' or char[0] == 'q') : 
+            break
+        elif(len(x) == 0):
+            print("Invalid key: p, q, item number")
+            chooseitem()
             break
         else:
             inventory_selection = int(char[0])
             possible_items = player1.location.items #this is accessing items
             # index into the current location's list of items using the `inventory_selection`
+            if(inventory_selection >= len(possible_items)):
+                print("Item not found.")
+                chooseitem()
+                break
             selected_item = possible_items[inventory_selection]
             player1.add_to_inventory(selected_item)
             room_dict[player1.location.name].remove_items(selected_item)
